@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container" style="max-width: 600px">
+  <div class="py-5 text-center">
+    <h2 th:text="|${topicName} 상세 정보|">토픽 상세 정보</h2>
+  </div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>파티션 번호</th>
+        <th>리더</th>
+        <th>Replicas</th>
+      </tr>
+      <tr th:each="topicPartition: ${topicPartitions}">
+        <td th:text="${topicPartition.partition}">파티션 번호</td>
+        <td th:text="${topicPartition.leader().id()}">리더</td>
+        <td>
+          <table>
+            <tbody>
+              <tr th:each="replica: ${topicPartition.replicas}">
+                <td th:text="${replica.id}">Replica ID</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      </thead>
+    </table>
+  </div>
+</body>
+</html>

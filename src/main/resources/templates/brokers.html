@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container" style="max-width: 600px">
+  <div class="py-5 text-center">
+    <h2>브로커 목록</h2>
+  </div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>호스트명</th>
+        <th>Controller</th>
+      </tr>
+      <tr th:each="broker: ${brokers}">
+        <td><a href="broker.html" th:href="@{/kafka/broker/{brokerId}(brokerId=${broker.brokerId})}" th:text="${broker.brokerId}">브로커 ID</a></td>
+        <td th:text="${broker.host}">호스트명</a></td>
+        <td th:text="'O'" th:if="${broker.isController eq true}">Controller</td>
+        <td th:text="'X'" th:if="${broker.isController eq false}">Controller</td>
+      </tr>
+      </thead>
+    </table>
+  </div>
+</body>
+</html>

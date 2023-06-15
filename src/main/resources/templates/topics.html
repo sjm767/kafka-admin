@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container" style="max-width: 600px">
+  <div class="py-5 text-center">
+    <h2>토픽 목록</h2>
+  </div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>토픽명</th>
+        <th>파티션 수</th>
+      </tr>
+      <tr th:each="topic: ${topics}">
+        <td><a href="topic.html" th:href="@{/kafka/topic/{topicName}(topicName=${topic.name})}" th:text="${topic.name}">토픽명</a></td>
+        <td th:text="${topic.partitionCount}">파티션 수</td>
+      </tr>
+      </thead>
+    </table>
+  </div>
+</body>
+</html>

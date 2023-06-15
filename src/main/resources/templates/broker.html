@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container" style="max-width: 600px">
+  <div class="py-5 text-center">
+    <h2>브로커 설정 리스트</h2>
+  </div>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Configuration</th>
+      <th>Value</th>
+    </tr>
+    <tr th:each="brokerConfig: ${brokerConfigs}">
+      <td th:text="${brokerConfig.key}">Config</a></td>
+      <td th:text="${brokerConfig.value}">Value</a></td>
+    </tr>
+    </thead>
+  </table>
+</div>
+</body>
+</html>
