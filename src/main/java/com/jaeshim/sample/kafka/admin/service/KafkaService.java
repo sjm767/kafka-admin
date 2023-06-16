@@ -16,6 +16,7 @@ import org.apache.kafka.clients.admin.Config;
 import org.apache.kafka.clients.admin.ConfigEntry;
 import org.apache.kafka.clients.admin.DescribeConfigsOptions;
 import org.apache.kafka.clients.admin.DescribeTopicsResult;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.admin.TopicListing;
 import org.apache.kafka.common.Node;
 import org.apache.kafka.common.TopicPartitionInfo;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 public class KafkaService {
 
   private final AdminClient adminClient;
+
 
   public List<BrokerDto> getBrokers() throws InterruptedException, ExecutionException {
     Collection<Node> nodes = adminClient.describeCluster().nodes().get();
@@ -87,6 +89,14 @@ public class KafkaService {
     DescribeTopicsResult topic = adminClient.describeTopics(
         Collections.singletonList(topicName));
     return topic.allTopicNames().get().get(topicName).partitions();
+  }
+
+  public void createTopic(String topicName,Integer partition,Short replicationFactor)
+      throws ExecutionException, InterruptedException {
+    NewTopic newTopic = new NewTopic(topicName, partition, replicationFactor);
+    adminClient.createTopics(Collections.singleton(newTopic)).all().get();
+
+    log.info("topic {} created.", topicName);
   }
 
   private Integer getPartitionCount(String topicName) {

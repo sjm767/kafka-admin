@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>메시지 창</title>
+</head>
+<body>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var message = [[${message}]]
+  alert(message);
+  location.replace([[${nextUrl}]]);
+  /*]]>*/
+</script>
+</body>
+</html>

@@ -27,7 +27,7 @@ public class BrokerController {
     List<BrokerDto> brokers = kafkaService.getBrokers();
 
     model.addAttribute("brokers", brokers);
-    return "brokers";
+    return "/broker/brokers";
   }
 
   @GetMapping("/broker/{brokerId}")
@@ -35,7 +35,7 @@ public class BrokerController {
     List<BrokerConfigDto> brokerConfigs = kafkaService.getBrokerConfigs(brokerId);
 
     model.addAttribute("brokerConfigs", brokerConfigs);
-    return "broker";
+    return "/broker/broker";
   }
 
 }

@@ -6,6 +6,7 @@
         href="../css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+<div th:insert="~{fragment/footer :: home}"></div>
 <div class="container" style="max-width: 600px">
   <div class="py-5 text-center">
     <h2 th:text="|${topicName} 상세 정보|">토픽 상세 정보</h2>
@@ -32,6 +33,7 @@
       </tr>
       </thead>
     </table>
+
   </div>
 </body>
 </html>
