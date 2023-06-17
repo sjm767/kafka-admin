@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .container {
+      max-width: 560px;
+    }
+    .field-error {
+      border-color: #dc3545;
+      color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+<div th:insert="~{fragment/footer :: home}"></div>
+<div class="container">
+  <div class="py-5 text-center">
+    <h2>로그인</h2>
+  </div>
+  <form action="index.html" th:action th:object="${joinForm}" method="post">
+    <div>
+      <label for="loginId">로그인 ID</label>
+      <input type="text" id="loginId" th:field="*{loginId}"
+             class="form-control"
+             th:errorclass="field-error">
+      <div class="field-error" th:errors="*{loginId}" />
+    </div>
+    <div>
+      <label for="password">비밀번호</label>
+      <input type="text" id="password" th:field="*{password}"
+             class="form-control"
+             th:errorclass="field-error">
+      <div class="field-error" th:errors="*{password}" />
+    </div>
+    <div>
+      <label for="age">나이</label>
+      <input type="text" id="age" th:field="*{age}"
+             class="form-control"
+             th:errorclass="field-error">
+      <div class="field-error" th:errors="*{age}" />
+    </div>
+    <div>
+      <label for="userName">이름</label>
+      <input type="text" id="userName" th:field="*{userName}"
+             class="form-control"
+             th:errorclass="field-error">
+      <div class="field-error" th:errors="*{userName}" />
+    </div>
+    <hr class="my-4">
+    <div class="row">
+      <div class="col">
+        <button class="w-100 btn btn-primary btn-lg" type="submit">
+          가입</button>
+      </div>
+      <div class="col">
+        <button class="w-100 btn btn-secondary btn-lg"
+                onclick="location.href='index.html'"
+                th:onclick="|location.href='@{/}'|"
+                type="button">취소</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

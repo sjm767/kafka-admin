@@ -3,18 +3,16 @@ package com.jaeshim.sample.kafka.admin.web.controller;
 
 import com.jaeshim.sample.kafka.admin.dto.TopicDto;
 import com.jaeshim.sample.kafka.admin.service.KafkaService;
-import com.jaeshim.sample.kafka.admin.variables.KafkaGlobalVariables;
 import com.jaeshim.sample.kafka.admin.web.form.AddTopicForm;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.TopicPartitionInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,8 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class TopicController {
 
   private final KafkaService kafkaService;
-
-  private final KafkaGlobalVariables kafkaGlobalVariables;
 
   @GetMapping("/topics")
   public String topics(Model model) throws ExecutionException, InterruptedException {
@@ -57,26 +53,11 @@ public class TopicController {
   }
 
   @PostMapping("/topic/add")
-  public String addTopic(@ModelAttribute AddTopicForm addTopicForm, Model model)
+  public String addTopic(@Validated @ModelAttribute AddTopicForm addTopicForm, BindingResult bindingResult, Model model)
       throws InterruptedException {
-    Map<String, String> errors = new HashMap<>();
-
     try {
-      if(!StringUtils.hasText(addTopicForm.getTopicName())){
-        errors.put("topicName","토픽명은 필수입니다");
-      }
-
-      if(addTopicForm.getPartition() == null || addTopicForm.getPartition() > 999){
-        errors.put("partition", "파티션 수는 999까지 가능합니다");
-      }
-
-      if(addTopicForm.getReplication() ==null || addTopicForm.getReplication() > kafkaGlobalVariables.BROKER_COUNT){
-        errors.put("replication","Replication Factor는 브로커 개수 만큼 가능합니다");
-      }
-
-      if (!errors.isEmpty()) {
-        log.info("errors = {}", errors);
-        model.addAttribute("errors", errors);
+      if (bindingResult.hasErrors()) {
+        log.info("errors={}", bindingResult);
         return "/topic/topicAddForm";
       }
 

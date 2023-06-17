@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container" style="max-width: 600px">
+  <div class="py-5 text-center">
+    <h2>KAFKA SAMPLE ADMIN</h2>
+    <p th:text="|안녕하세요 ${userName}님|">안녕하세요. 게스트님</p>
+    <li><a href="/logout">로그아웃</a></li>
+  </div>
+  <div class="row">
+    <div class="col">
+      <button class="w-100 btn btn-secondary btn-lg" type="button"
+              th:onclick="|location.href='@{/kafka/brokers}'|">
+        브로커
+      </button>
+    </div>
+    <div class="col">
+      <button class="w-100 btn btn-dark btn-lg"
+              onclick="location.href='topics.html'"
+              th:onclick="|location.href='@{/kafka/topics}'|" type="button">
+        토픽
+      </button>
+    </div>
+  </div>
+  <hr class="my-4">
+</div> <!-- /container -->
+</body>
+</html>

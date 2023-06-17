@@ -25,27 +25,27 @@
     <div>
       <label for="topicName">토픽명</label>
       <input type="text" id="topicName" th:field="*{topicName}" class="form-control"
-             th:class="${errors?.containsKey('topicName')} ? 'form-control field-error' : 'form-control'"
+             th:errorclass="field-error"
              placeholder="토픽명을 입력하세요">
-      <div class="field-error" th:if="${errors?.containsKey('topicName')}" th:text="${errors['topicName']}">
+      <div class="field-error" th:errors="*{topicName}">
         토픽명 오류
       </div>
     </div>
     <div>
       <label for="partition">파티션 수</label>
       <input type="text" id="partition" th:field="*{partition}" class="form-control"
-             th:class="${errors?.containsKey('partition')} ? 'form-control field-error' : 'form-control'"
+             th:errorclass="field-error"
              placeholder="파티션 수를 입력하세요">
-      <div class="field-error" th:if="${errors?.containsKey('partition')}" th:text="${errors['partition']}">
+      <div class="field-error" th:errors="*{partition}">
         파티션 수 오류
       </div>
     </div>
     <div>
       <label for="replication">ReplicationFactor</label>
       <input type="text" id="replication" th:field="*{replication}" class="form-control"
-             th:class="${errors?.containsKey('replication')} ? 'form-control field-error' : 'form-control'"
+             th:errorclass="field-error"
              placeholder="Replication Factor 를 입력하세요">
-      <div class="field-error" th:if="${errors?.containsKey('replication')}" th:text="${errors['replication']}">
+      <div class="field-error" th:errors="*{replication}">
         Replication 오류
       </div>
     </div>

@@ -19,7 +19,7 @@ public class KafkaGlobalVariables {
 
   @PostConstruct
   public void init() throws ExecutionException, InterruptedException {
-    BROKER_COUNT =kafkaService.getBrokers().size();
+    BROKER_COUNT = kafkaService.getBrokers().size();
   }
 
 }

@@ -6,17 +6,18 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class AddTopicForm {
+public class JoinForm {
 
   @NotBlank
-  private String topicName;
+  private String loginId;
 
-  @Max(999)
+  @NotBlank
+  private String password;
+
+  @NotBlank
+  private String userName;
+
+  @Max(200)
   @NotNull
-  private Integer partition;
-
-  @Max(999)
-  @NotNull
-  private Short replication;
-
+  private Integer age;
 }
