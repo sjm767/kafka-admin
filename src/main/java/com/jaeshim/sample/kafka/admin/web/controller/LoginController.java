@@ -1,10 +1,14 @@
 package com.jaeshim.sample.kafka.admin.web.controller;
 
 import com.jaeshim.sample.kafka.admin.domain.member.Member;
+import com.jaeshim.sample.kafka.admin.domain.member.SessionMember;
 import com.jaeshim.sample.kafka.admin.service.LoginService;
+import com.jaeshim.sample.kafka.admin.web.SessionConst;
 import com.jaeshim.sample.kafka.admin.web.form.LoginForm;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -14,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Slf4j
@@ -30,8 +35,8 @@ public class LoginController {
   }
 
   @PostMapping("/login")
-  public String login(@Validated @ModelAttribute LoginForm loginForm, BindingResult bindingResult, Model model,
-      HttpServletResponse response) {
+  public String login(@Validated @ModelAttribute LoginForm loginForm, BindingResult bindingResult, Model model, HttpServletRequest request,
+      HttpServletResponse response,@RequestParam(defaultValue = "/") String redirectURL) {
     if (bindingResult.hasErrors()) {
       log.info("errors={}", bindingResult);
       return "/login/loginForm";
@@ -44,15 +49,19 @@ public class LoginController {
     }
 
     //로그인 성공 처리
-    //쿠키에 시간 정보를 주지 않으면 세션 쿠키 (브라우저 종료시 모두 종료)
-    Cookie idCookie = new Cookie("memberId", String.valueOf(result.getId()));
-    response.addCookie(idCookie);
-    return "redirect:/";
+    HttpSession session = request.getSession();
+    SessionMember sessionMember = new SessionMember(result.getUserName(),result.getRole());
+    session.setAttribute(SessionConst.SESSION_COOKIE_NAME, sessionMember);
+    return "redirect:"+redirectURL;
   }
 
   @GetMapping("/logout")
-  public String logout(HttpServletResponse response){
-    expireCookie(response,"memberId");
+  public String logout(HttpServletRequest request){
+    HttpSession session = request.getSession(false);
+    if (session != null) {
+      session.invalidate();
+    }
+
     return "redirect:/";
   }
   private void expireCookie(HttpServletResponse response,String cookieName) {

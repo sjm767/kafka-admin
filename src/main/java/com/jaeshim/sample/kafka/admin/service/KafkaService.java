@@ -1,7 +1,9 @@
 package com.jaeshim.sample.kafka.admin.service;
 
+import com.jaeshim.sample.kafka.admin.constant.SimpleResultConsts;
 import com.jaeshim.sample.kafka.admin.dto.BrokerConfigDto;
 import com.jaeshim.sample.kafka.admin.dto.BrokerDto;
+import com.jaeshim.sample.kafka.admin.dto.result.SimpleResult;
 import com.jaeshim.sample.kafka.admin.dto.TopicDto;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,10 +41,10 @@ public class KafkaService {
     List<BrokerDto> brokers = new ArrayList<>();
     for (Node node : nodes) {
       BrokerDto brokerDto = BrokerDto.builder()
-              .brokerId(node.idString())
-              .host(node.host())
-              .port(node.port())
-              .build();
+          .brokerId(node.idString())
+          .host(node.host())
+          .port(node.port())
+          .build();
 
       if (node.idString().equals(controller.idString())) {
         brokerDto.setIsController(true);
@@ -53,7 +55,8 @@ public class KafkaService {
     return brokers;
   }
 
-  public List<BrokerConfigDto> getBrokerConfigs(String brokerId) throws ExecutionException, InterruptedException {
+  public List<BrokerConfigDto> getBrokerConfigs(String brokerId)
+      throws ExecutionException, InterruptedException {
     List<BrokerConfigDto> result = new ArrayList<>();
 
     ConfigResource brokerResource = new ConfigResource(Type.BROKER, brokerId);
@@ -85,18 +88,21 @@ public class KafkaService {
     return result;
   }
 
-  public List<TopicPartitionInfo> getTopicPartitionInfo(String topicName) throws ExecutionException, InterruptedException {
+  public List<TopicPartitionInfo> getTopicPartitionInfo(String topicName)
+      throws ExecutionException, InterruptedException {
     DescribeTopicsResult topic = adminClient.describeTopics(
         Collections.singletonList(topicName));
     return topic.allTopicNames().get().get(topicName).partitions();
   }
 
-  public void createTopic(String topicName,Integer partition,Short replicationFactor)
-      throws ExecutionException, InterruptedException {
+  public SimpleResult createTopic(String topicName, Integer partition, Short replicationFactor) {
     NewTopic newTopic = new NewTopic(topicName, partition, replicationFactor);
-    adminClient.createTopics(Collections.singleton(newTopic)).all().get();
-
-    log.info("topic {} created.", topicName);
+    try {
+      adminClient.createTopics(Collections.singleton(newTopic)).all().get();
+    } catch (Exception e) {
+      return new SimpleResult(SimpleResultConsts.BAD, e.getMessage());
+    }
+    return new SimpleResult(SimpleResultConsts.OK, "");
   }
 
   private Integer getPartitionCount(String topicName) {

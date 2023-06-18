@@ -1,4 +1,4 @@
-package com.jaeshim.sample.kafka.admin.validator;
+package com.jaeshim.sample.kafka.admin.web.validator;
 
 import com.jaeshim.sample.kafka.admin.variables.KafkaGlobalVariables;
 import com.jaeshim.sample.kafka.admin.web.form.AddTopicForm;

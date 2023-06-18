@@ -1,7 +1,9 @@
 package com.jaeshim.sample.kafka.admin.web.controller;
 
 
+import com.jaeshim.sample.kafka.admin.constant.SimpleResultConsts;
 import com.jaeshim.sample.kafka.admin.dto.TopicDto;
+import com.jaeshim.sample.kafka.admin.dto.result.SimpleResult;
 import com.jaeshim.sample.kafka.admin.service.KafkaService;
 import com.jaeshim.sample.kafka.admin.web.form.AddTopicForm;
 import java.util.List;
@@ -55,19 +57,22 @@ public class TopicController {
   @PostMapping("/topic/add")
   public String addTopic(@Validated @ModelAttribute AddTopicForm addTopicForm, BindingResult bindingResult, Model model)
       throws InterruptedException {
-    try {
+
       if (bindingResult.hasErrors()) {
         log.info("errors={}", bindingResult);
         return "/topic/topicAddForm";
       }
 
-      kafkaService.createTopic(addTopicForm.getTopicName(), addTopicForm.getPartition(),
-          addTopicForm.getReplication());
-    } catch (ExecutionException e){
-      model.addAttribute("message", e.getMessage());
+    SimpleResult result = kafkaService.createTopic(addTopicForm.getTopicName(),
+        addTopicForm.getPartition(),
+        addTopicForm.getReplication());
+
+    if (!result.getResultCode().equals(SimpleResultConsts.OK)) {
+      model.addAttribute("message", result.getReason());
       model.addAttribute("nextUrl", "/kafka/topic/add");
       return "/alert/messageAlert";
     }
+
     return "redirect:/kafka/topic/" + addTopicForm.getTopicName();
   }
 

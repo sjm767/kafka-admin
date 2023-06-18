@@ -9,11 +9,11 @@
 <div class="container" style="max-width: 600px">
   <div class="py-5 text-center">
     <h2>KAFKA SAMPLE ADMIN</h2>
-    <p th:text="|안녕하세요 ${userName}님|">안녕하세요. 게스트님</p>
+    <p th:text="|안녕하세요 ${loginMember.getUserName()}님|">안녕하세요. 게스트님</p>
     <li><a href="/logout">로그아웃</a></li>
   </div>
   <div class="row">
-    <div class="col">
+    <div th:if="${loginMember.getRole() == T(com.jaeshim.sample.kafka.admin.role.MemberRole).ADMIN}" class="col">
       <button class="w-100 btn btn-secondary btn-lg" type="button"
               th:onclick="|location.href='@{/kafka/brokers}'|">
         브로커
